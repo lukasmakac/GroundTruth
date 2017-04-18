@@ -1,10 +1,5 @@
-from gi.repository import GdkPixbuf
-
 __author__ = 'Lukas'
 
-import cairo
-
-from gi.repository import GdkPixbuf
 from PIL import Image
 
 class ImageProcesser:
@@ -37,15 +32,6 @@ class ImageProcesser:
 
         try:
             im = Image.open(file.get_path())
-
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file.get_path(), width, height)
-            # pixbuf = pixbuf.scale_simple(480, 400, Gdk.INTERP_BILINEAR)
-
-            # arr = array.array('B', im.tobytes())
-            # width, height = im.size
-            # return GdkPixbuf.Pixbuf.new_from_data(arr, GdkPixbuf.Colorspace.RGB, True, 8, width, height, width * 4)
-
-            return pixbuf
 
         except IOError as e:
             print("Error: "+e.message)
