@@ -1,6 +1,7 @@
-from PyQt5.QtCore import QRect, QCoreApplication
-import cv2
+from PyQt5.QtCore import QCoreApplication
+
 from modules.ImageWidget import ImageWidget
+from modules.MenuBar import MenuBar
 
 __author__ = 'Lukas Maruniak imaruniak@fit.vutbr.cz'
 
@@ -9,9 +10,9 @@ INITIAL_DIR = "c:/Users/Lukas/FIT/1DVI/DIZ/resources/Sitnice/MartinD/"
 
 import sys
 
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QFileDialog, QVBoxLayout, QWidget, QLabel, \
-    QGraphicsView
-from PyQt5.QtGui import QIcon, QPainter, QPixmap, QImage
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QVBoxLayout, QWidget
+from PyQt5.QtGui import QIcon
+
 
 class Window(QMainWindow):
 
@@ -26,37 +27,9 @@ class Window(QMainWindow):
         self.setWindowTitle('Icon')
         self.setWindowIcon(QIcon('web.png'))
 
-        #menu
-
-        openAction = QAction('&Open', self)
-        openAction.setShortcut('Ctrl+O')
-        openAction.setStatusTip('Open Image File')
-        openAction.triggered.connect(self.onOpenImageFile)
-
-        openMultipleFilesAction = QAction('&Open Multiple Files', self)
-        openMultipleFilesAction.setShortcut('Ctrl+A')
-        openMultipleFilesAction.setStatusTip('Open multiple Image Files')
-        openMultipleFilesAction.triggered.connect(self.onOpenMultipleImageFiles)
-
-        openDirAction = QAction('&Open Directory', self)
-        openDirAction.setShortcut('Ctrl+D')
-        openDirAction.setStatusTip('Open Image Directory')
-        openDirAction.triggered.connect(self.onOpenImageDir)
-
-        exitAction = QAction(QIcon('exit.png'), '&Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Exit application')
-        exitAction.triggered.connect(qApp.quit)
-
         self.statusBar()
 
-        menubar = self.menuBar()
-        fileMenu = menubar.addMenu('&File')
-        fileMenu.addAction(openAction)
-        fileMenu.addAction(openMultipleFilesAction)
-        fileMenu.addAction(openDirAction)
-        fileMenu.addSeparator()
-        fileMenu.addAction(exitAction)
+        self.setMenuBar(MenuBar(self))
 
         #Content
 
