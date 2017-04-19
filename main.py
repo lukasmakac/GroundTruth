@@ -3,7 +3,7 @@ from PyQt5.QtCore import QCoreApplication
 from modules.ImageWidget import ImageWidget
 from modules.MenuBar import MenuBar
 
-__author__ = 'Lukas Maruniak imaruniak@fit.vutbr.cz'
+__author__ = 'Lukas Maruniak<imaruniak@fit.vutbr.cz>'
 
 NAME = "Ground Truth Maker"
 INITIAL_DIR = "c:/Users/Lukas/FIT/1DVI/DIZ/resources/Sitnice/MartinD/"
@@ -15,6 +15,8 @@ from PyQt5.QtGui import QIcon
 
 
 class Window(QMainWindow):
+
+    gridSize = 10
 
     def __init__(self):
         super().__init__()
@@ -29,17 +31,14 @@ class Window(QMainWindow):
 
         self.statusBar()
 
-        self.setMenuBar(MenuBar(self))
+        self.setMenuBar(MenuBar(self, self))
 
         #Content
-
         self.centralWidget = QWidget(self)
         self.setCentralWidget(self.centralWidget)
 
         self.layout = QVBoxLayout()
-
         self.imageWidget = ImageWidget()
-
         self.layout.addWidget(self.imageWidget)
 
         self.centralWidget.setLayout(self.layout)
@@ -81,16 +80,9 @@ class Window(QMainWindow):
 
 
     def paintImage(self, imageFile):
-        # self.cvImage = cv2.imread(r"126.JPG")
-        # height, width, byteValue = self.cvImage.shape
-        # byteValue = byteValue * width
-        #
-        # cv2.cvtColor(self.cvImage, cv2.COLOR_BGR2RGB, self.cvImage)
-        #
-        # self.mQImage = QImage(self.cvImage, width, height, byteValue, QImage.Format_RGB888)
 
         self.imageWidget.display_image(imageFile)
-        QCoreApplication.processEvents()  # let Qt do his work
+        # self.imageWidget.display_grid(self.gridSize)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

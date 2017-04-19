@@ -5,7 +5,7 @@ __author__ = 'Lukas'
 
 class MenuBar(QMenuBar):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, handler=None):
 
         super(MenuBar, self).__init__(parent)
 
@@ -13,17 +13,17 @@ class MenuBar(QMenuBar):
         self.openAction = QAction('&Open', self)
         self.openAction.setShortcut('Ctrl+O')
         self.openAction.setStatusTip('Open Image File')
-        self.openAction.triggered.connect(parent.onOpenImageFile)
+        self.openAction.triggered.connect(handler.onOpenImageFile)
 
         self.openMultipleFilesAction = QAction('&Open Multiple Files', self)
         self.openMultipleFilesAction.setShortcut('Ctrl+A')
         self.openMultipleFilesAction.setStatusTip('Open multiple Image Files')
-        self.openMultipleFilesAction.triggered.connect(parent.onOpenMultipleImageFiles)
+        self.openMultipleFilesAction.triggered.connect(handler.onOpenMultipleImageFiles)
 
         self.openDirAction = QAction('&Open Directory', self)
         self.openDirAction.setShortcut('Ctrl+D')
         self.openDirAction.setStatusTip('Open Image Directory')
-        self.openDirAction.triggered.connect(parent.onOpenImageDir)
+        self.openDirAction.triggered.connect(handler.onOpenImageDir)
 
         self.exitAction = QAction(QIcon('exit.png'), '&Exit', self)
         self.exitAction.setShortcut('Ctrl+Q')
