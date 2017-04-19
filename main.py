@@ -1,5 +1,6 @@
-from PyQt5.QtCore import QRect
+from PyQt5.QtCore import QRect, QCoreApplication
 import cv2
+from modules.ImageWidget import ImageWidget
 
 __author__ = 'Lukas Maruniak imaruniak@fit.vutbr.cz'
 
@@ -11,8 +12,6 @@ import sys
 from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QFileDialog, QVBoxLayout, QWidget, QLabel, \
     QGraphicsView
 from PyQt5.QtGui import QIcon, QPainter, QPixmap, QImage
-
-from modules.Handler import Handler
 
 class Window(QMainWindow):
 
@@ -66,9 +65,9 @@ class Window(QMainWindow):
 
         self.layout = QVBoxLayout()
 
-        self.label = QLabel()
+        self.imageWidget = ImageWidget()
 
-        self.layout.addWidget(self.label)
+        self.layout.addWidget(self.imageWidget)
 
         self.centralWidget.setLayout(self.layout)
 
@@ -117,15 +116,8 @@ class Window(QMainWindow):
         #
         # self.mQImage = QImage(self.cvImage, width, height, byteValue, QImage.Format_RGB888)
 
-        img = imageFile
-        pixmap = QPixmap(img)
-
-        # painter = QPainter()
-        # painter.begin(pixmap)
-        # painter.drawImage(0, 0, self.mQImage)
-        # painter.end()
-
-        self.label.setPixmap(pixmap)
+        self.imageWidget.display_image(imageFile)
+        QCoreApplication.processEvents()  # let Qt do his work
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
