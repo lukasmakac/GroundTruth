@@ -20,6 +20,8 @@ class ImageWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.scene = QGraphicsScene()
+        self.scene.mousePressEvent = self.onSceneClick
+
         self.view = QGraphicsView()
         self.view.setScene(self.scene)
         self.view.setGeometry(QRect(0, 0, self.viewportWidth, self.viewportHeight))
@@ -43,50 +45,24 @@ class ImageWidget(QWidget):
             self.scene.clear()
             width = self.img.width()
             height = self.img.height()
+
+            #Add image
             pixMap = QPixmap.fromImage(self.img)
 
-            #draw grid
-            #self.drawGrid(pixMap, width, height, self.gridSize)
-
-            #mark spots
+            #Display spots
             if(self.points):
                 for point in self.points:
                     self.markSpot(pixMap, point)
 
-            self.scene.mousePressEvent = self.onSceneClick
             self.scene.addPixmap(pixMap)
 
+            #draw grid
+            self.drawGrid(width, height, self.gridSize)
+
             #self.view.fitInView(QRectF(0, 0, width, height), Qt.KeepAspectRatioByExpanding)
-
-            #draw vertical lines
-            for i in range(0, width, self.gridSize):
-                self.scene.addLine(QLineF(QPoint(i, 0), QPoint(i, height)), QPen(Qt.black))
-
-            #draw horizontal lines
-            for i in range(0, height, self.gridSize):
-                self.scene.addLine(QLineF(QPoint(0, i), QPoint(width, i)), QPen(Qt.black))
-
             self.view.fitInView(QRectF(0, 0, width, height), Qt.KeepAspectRatio)
 
             self.scene.update()
-
-
-    # def mousePressEvent(self, QMouseEvent):
-    #     #pos of view
-    #     point = QMouseEvent.pos()
-    #
-    #     aspectRatioX = self.img.width()/self.view.width()
-    #     aspectRatioY = self.img.height()/self.view.height()
-    #
-    #     #compute coords for img (viewport can be smaller/higher than original image)
-    #     x = math.floor(point.x()*aspectRatioX / self.gridSize)*self.gridSize
-    #     y = math.floor(point.y()*aspectRatioY / self.gridSize)*self.gridSize
-    #
-    #     self.points.append(QPoint(x, y))
-    #
-    #     print("x: {}, y: {}".format(x, y))
-    #
-    #     self.view.repaint()
 
     def onSceneClick(self, QGraphicsSceneMouseEvent):
         #pos of view
@@ -107,26 +83,20 @@ class ImageWidget(QWidget):
 
         painter = QPainter()
         painter.begin(paintDevice)
-        painter.setOpacity(.5)
-        painter.fillRect(rect, Qt.white)
+        painter.setOpacity(.3)
+        painter.fillRect(rect, Qt.green)
         painter.end()
 
         self.scene.addRect(rect, Qt.green)
 
-    def drawGrid(self, paintDevice, width, height, gridSize):
-        painter = QPainter()
-        painter.begin(paintDevice)
-        painter.setPen(QPen(Qt.black))
-
+    def drawGrid(self, width, height, gridSize):
         #draw vertical lines
         for i in range(0, width, gridSize):
-            painter.drawLine(QLineF(QPoint(i, 0), QPoint(i, height)))
+            self.scene.addLine(QLineF(QPoint(i, 0), QPoint(i, height)), QPen(Qt.black))
 
         #draw horizontal lines
         for i in range(0, height, gridSize):
-            painter.drawLine(QLineF(QPoint(0, i), QPoint(width, i)))
-
-        painter.end()
+            self.scene.addLine(QLineF(QPoint(0, i), QPoint(width, i)), QPen(Qt.black))
 
 
 
